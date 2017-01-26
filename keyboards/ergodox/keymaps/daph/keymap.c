@@ -7,6 +7,8 @@
 #define ARROW 1 // Arrow keys and numpad
 #define SYMB  2 // Symbols
 
+#define LEADER_TIMEOUT 300
+
 enum custom_keycodes {
   PLACEHOLDER = SAFE_RANGE, // can always be here
   VRSN
@@ -22,9 +24,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
  * | Tab    |   A  |   S  |   D  |   F  |   G  |------|           |------|   H  |   J  |   K  |   L  |;     |'       |
  * |--------+------+------+------+------+------| |    |           | :    |------+------+------+------+------+--------|
- * | LGui   |   Z  |   X  |   C  |   V  |   B  |      |           |      |   N  |   M  |   =  |   ,  | .    |   /    |
+ * |  LGui  |   Z  |   X  |   C  |   V  |   B  |      |           |      |   N  |   M  |   =  |   ,  | .    | //Ctrl |
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
- *   |~L1| ` |  \  |   ,  | Ctrl |                                       |  Alt |  Up  | Down | Right| ~L2  |
+ *   |~L1| `|  \  |   ,  | LEADER|                                        |  Alt |  Up  | Down | Right| ~L2  |
  *   `----------------------------------'                                       `----------------------------------'
  *                                        ,-------------.       ,-------------.
  *                                        | Ctrl |Shift |       | Alt  | Alt  |
@@ -41,8 +43,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_GRV,         KC_1,         KC_2,   KC_3,   KC_4,   KC_5,   KC_DEL,
         KC_ESC,         KC_Q,         KC_W,   KC_E,   KC_R,   KC_T,   KC_LBRC,
         KC_TAB,         KC_A,         KC_S,   KC_D,   KC_F,   KC_G,
-        KC_LGUI,        KC_Z,         KC_X,   KC_C,   KC_V,   KC_B,   S(KC_BSLS),
-        MO(1),          KC_GRV,       KC_BSLS,     KC_COMM,   KC_LCTL,
+        KC_LGUI, KC_Z,         KC_X,   KC_C,   KC_V,   KC_B,   S(KC_BSLS),
+        MO(1),          KC_GRV,       KC_BSLS,     KC_COMM,   KC_LEAD,
                                                     KC_LCTL,  KC_LSFT,
                                                               KC_HOME,
                                                KC_SPC,KC_ENT ,KC_END,
@@ -50,7 +52,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
              KC_LBRC,     KC_6,   KC_7,  KC_8,   KC_9,   KC_0,             KC_BSLS,
              KC_RBRC,     KC_Y,   KC_U,  KC_I,   KC_O,   KC_P,             KC_MINS,
                           KC_H,   KC_J,  KC_K,   KC_L,   KC_SCLN,          KC_QUOT,
-             S(KC_SCLN),  KC_N,   KC_M,  KC_EQL, KC_COMM,KC_DOT,           KC_SLSH,
+             S(KC_SCLN),  KC_N,   KC_M,  KC_EQL, KC_COMM,KC_DOT,           CTL_T(KC_SLSH),
                                   KC_LALT,KC_UP, KC_DOWN,KC_RIGHT,         MO(2),
              KC_LALT,        KC_LALT,
              KC_PGUP,
@@ -156,30 +158,23 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 // Runs just one time when the keyboard initializes.
 void matrix_init_user(void) {
-
 };
 
 
+LEADER_EXTERNS();
 // Runs constantly in the background, in a loop.
 void matrix_scan_user(void) {
+    LEADER_DICTIONARY() {
+        leading = false;
+        leader_end();
 
-    uint8_t layer = biton32(layer_state);
-
-    ergodox_board_led_off();
-    ergodox_right_led_1_off();
-    ergodox_right_led_2_off();
-    ergodox_right_led_3_off();
-    switch (layer) {
-      // TODO: Make this relevant to the ErgoDox EZ.
-        case 1:
-            ergodox_right_led_1_on();
-            break;
-        case 2:
-            ergodox_right_led_2_on();
-            break;
-        default:
-            // none
-            break;
+        SEQ_ONE_KEY(KC_Q) {
+            register_code(KC_LGUI);
+            register_code(KC_LSFT);
+            register_code(KC_Q);
+            unregister_code(KC_Q);
+            unregister_code(KC_LSFT);
+            unregister_code(KC_LGUI);
+        }
     }
-
 };
