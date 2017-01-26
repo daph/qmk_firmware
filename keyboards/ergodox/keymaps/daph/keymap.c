@@ -7,11 +7,19 @@
 #define ARROW 1 // Arrow keys and numpad
 #define SYMB  2 // Symbols
 
-#define LEADER_TIMEOUT 300
+#define TAPPING_TERM 100
 
 enum custom_keycodes {
   PLACEHOLDER = SAFE_RANGE, // can always be here
   VRSN
+};
+
+enum tap_dance {
+    TD_SCLN_CLN
+};
+
+qk_tap_dance_action_t tap_dance_actions[] = {
+    [TD_SCLN_CLN] = ACTION_TAP_DANCE_DOUBLE(KC_SCLN, S(KC_SCLN))
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -24,12 +32,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
  * | Tab    |   A  |   S  |   D  |   F  |   G  |------|           |------|   H  |   J  |   K  |   L  |;     |'       |
  * |--------+------+------+------+------+------| |    |           | :    |------+------+------+------+------+--------|
- * |  LGui  |   Z  |   X  |   C  |   V  |   B  |      |           |      |   N  |   M  |   =  |   ,  | .    | //Ctrl |
+ * |  LGui  |   Z  |   X  |   C  |   V  |   B  |      |           |      |   N  |   M  |   =  |   ,  | .    |   /    |
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
- *   |~L1| `|  \  |   ,  | LEADER|                                        |  Alt |  Up  | Down | Right| ~L2  |
+ *   |~L1| `|  \  |   ,  | Ctrl  |                                        |  Alt |  Up  | Down | Right| ~L2 |
  *   `----------------------------------'                                       `----------------------------------'
  *                                        ,-------------.       ,-------------.
- *                                        | Ctrl |Shift |       | Alt  | Alt  |
+ *                                        | LEAD |Shift |       | Alt  | Alt  |
  *                                 ,------|------|------|       |------+--------+------.
  *                                 |      |      | Home |       | PgUp |        |      |
  *                                 | Space|Enter |------|       |------|Bckspc  |Shift |
@@ -44,15 +52,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_ESC,         KC_Q,         KC_W,   KC_E,   KC_R,   KC_T,   KC_LBRC,
         KC_TAB,         KC_A,         KC_S,   KC_D,   KC_F,   KC_G,
         KC_LGUI, KC_Z,         KC_X,   KC_C,   KC_V,   KC_B,   S(KC_BSLS),
-        MO(1),          KC_GRV,       KC_BSLS,     KC_COMM,   KC_LEAD,
-                                                    KC_LCTL,  KC_LSFT,
+        MO(1),          KC_GRV,       KC_BSLS,     KC_COMM,   KC_LCTL,
+                                                    KC_LEAD,  KC_LSFT,
                                                               KC_HOME,
                                                KC_SPC,KC_ENT ,KC_END,
         // right hand
              KC_LBRC,     KC_6,   KC_7,  KC_8,   KC_9,   KC_0,             KC_BSLS,
              KC_RBRC,     KC_Y,   KC_U,  KC_I,   KC_O,   KC_P,             KC_MINS,
-                          KC_H,   KC_J,  KC_K,   KC_L,   KC_SCLN,          KC_QUOT,
-             S(KC_SCLN),  KC_N,   KC_M,  KC_EQL, KC_COMM,KC_DOT,           CTL_T(KC_SLSH),
+                          KC_H,   KC_J,  KC_K,   KC_L,   TD(TD_SCLN_CLN),  KC_QUOT,
+             S(KC_SCLN),  KC_N,   KC_M,  KC_EQL, KC_COMM,KC_DOT,           KC_SLSH,
                                   KC_LALT,KC_UP, KC_DOWN,KC_RIGHT,         MO(2),
              KC_LALT,        KC_LALT,
              KC_PGUP,
@@ -178,3 +186,4 @@ void matrix_scan_user(void) {
         }
     }
 };
+
