@@ -7,7 +7,7 @@
 #define ARROW 1 // Arrow keys and numpad
 #define SYMB  2 // Symbols
 
-#define TAPPING_TERM 100
+#define TAPPING_TERM 5
 
 enum custom_keycodes {
   PLACEHOLDER = SAFE_RANGE, // can always be here
