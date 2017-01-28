@@ -19,7 +19,7 @@ enum tap_dance {
 };
 
 qk_tap_dance_action_t tap_dance_actions[] = {
-    [TD_SCLN_CLN] = ACTION_TAP_DANCE_DOUBLE(KC_SCLN, S(KC_SCLN))
+    [TD_SCLN_CLN] = ACTION_TAP_DANCE_DOUBLE(KC_SCLN, KC_COLN)
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
