@@ -7,9 +7,6 @@
 #define ARROW 1 // Arrow keys and numpad
 #define SYMB  2 // Symbols
 
-#undef  TAPPING_TERM
-#define TAPPING_TERM 5
-
 #define TAP_ONCE(code)  \
   register_code (code); \
   unregister_code (code)
@@ -24,18 +21,6 @@ enum custom_keycodes {
   VRSN,
   OSX,
   LINUX
-};
-
-enum tap_dance {
-    TD_SCLN_CLN
-};
-
-enum macros {
-    HELLO_M
-};
-
-qk_tap_dance_action_t tap_dance_actions[] = {
-    [TD_SCLN_CLN] = ACTION_TAP_DANCE_DOUBLE(KC_SCLN, KC_COLN)
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -87,7 +72,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,---------------------------------------------------.           ,--------------------------------------------------.
  * |Version  |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |           |  F7  |  F8  |  F9  | F10  | F11  |  F12 | RESET  |
  * |---------+------+------+------+------+------+------|           |------+------+------+------+------+------+--------|
- * |  OSX    |HLO M |  UP  |      |      |      |      |           |      |   [  |   1  |   2  |   3  |   =  |        |
+ * |  OSX    |      |  UP  |      |      |      |      |           |      |   [  |   1  |   2  |   3  |   =  |        |
  * |---------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
  * |  LINUX  | LEFT | DOWN | RIGHT|      |      |------|           |------|   ]  |   4  |   5  |   6  |   -  |        |
  * |---------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
@@ -107,7 +92,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [ARROW] = KEYMAP(
        // left hand
        VRSN,   KC_F1,  KC_F2,  KC_F3,  KC_F4,  KC_F5,  KC_F6,
-       OSX,M(HELLO_M),KC_UP,  KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,
+       OSX,    KC_TRNS,KC_UP,  KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,
        LINUX,KC_LEFT,KC_DOWN,KC_RGHT,KC_TRNS,KC_TRNS,
        KC_TRNS,UC(0x03BB),KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,
           KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,
