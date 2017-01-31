@@ -7,7 +7,17 @@
 #define ARROW 1 // Arrow keys and numpad
 #define SYMB  2 // Symbols
 
+#undef  TAPPING_TERM
 #define TAPPING_TERM 5
+
+#define TAP_ONCE(code)  \
+  register_code (code); \
+  unregister_code (code)
+
+#define TAP_UNI(hex)        \
+    unicode_input_start();  \
+    register_hex(hex);      \
+    unicode_input_finish();
 
 enum custom_keycodes {
   PLACEHOLDER = SAFE_RANGE, // can always be here
@@ -37,7 +47,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * | Esc    |   Q  |   W  |   E  |   R  |   T  |  [   |           |  ]   |   Y  |   U  |   I  |   O  |   P  |   -    |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
  * | Tab    |   A  |   S  |   D  |   F  |   G  |------|           |------|   H  |   J  |   K  |   L  |;     |'       |
- * |--------+------+------+------+------+------| |    |           |      |------+------+------+------+------+--------|
+ * |--------+------+------+------+------+------| |    |           | LEAD |------+------+------+------+------+--------|
  * |  LGui  |   Z  |   X  |   C  |   V  |   B  |      |           |      |   N  |   M  |   =  |   ,  | .    |   /    |
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
  *   |~L1| `|  \  |   ,  | Ctrl  |                                        |  Alt |  Up  | Down | Right| ~L2 |
@@ -66,7 +76,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
              KC_LBRC,     KC_6,   KC_7,  KC_8,   KC_9,   KC_0,             KC_BSLS,
              KC_RBRC,     KC_Y,   KC_U,  KC_I,   KC_O,   KC_P,             KC_MINS,
                           KC_H,   KC_J,  KC_K,   KC_L,   KC_SCLN,  KC_QUOT,
-             KC_NO,       KC_N,   KC_M,  KC_EQL, KC_COMM,KC_DOT,           KC_SLSH,
+             KC_LEAD,       KC_N,   KC_M,  KC_EQL, KC_COMM,KC_DOT,           KC_SLSH,
                                   KC_LALT,KC_UP, KC_DOWN,KC_RIGHT,         MO(2),
              KC_LALT,        KC_LALT,
              KC_PGUP,
@@ -99,7 +109,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        VRSN,   KC_F1,  KC_F2,  KC_F3,  KC_F4,  KC_F5,  KC_F6,
        OSX,M(HELLO_M),KC_UP,  KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,
        LINUX,KC_LEFT,KC_DOWN,KC_RGHT,KC_TRNS,KC_TRNS,
-       KC_TRNS,UC(0x03BB),UC(0x30C4),UC(0x00AF),KC_TRNS,KC_TRNS,KC_TRNS,
+       KC_TRNS,UC(0x03BB),KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,
           KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,
                                        KC_TRNS,KC_TRNS,
                                                KC_TRNS,
@@ -184,17 +194,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 // Runs just one time when the keyboard initializes.
 void matrix_init_user(void) {
+    // Default to Linux unicode
+    set_unicode_input_mode(UC_LNX);
 };
 
 const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
-    switch(id) {
-        case HELLO_M:
-            if (record->event.pressed) {
-                return MACRO(T(M), T(A), T(C), T(R), T(O), T(S), END);
-            }
-            break;
-    }
-
     return MACRO_NONE;
 }
 
@@ -205,6 +209,7 @@ void matrix_scan_user(void) {
         leading = false;
         leader_end();
 
+        // Close window in i3
         SEQ_ONE_KEY(KC_Q) {
             register_code(KC_LGUI);
             register_code(KC_LSFT);
@@ -212,6 +217,17 @@ void matrix_scan_user(void) {
             unregister_code(KC_Q);
             unregister_code(KC_LSFT);
             unregister_code(KC_LGUI);
+        }
+
+        // Shruggie
+        SEQ_ONE_KEY(KC_S) {
+            TAP_UNI(0xaf)
+            TAP_ONCE(KC_BSLS);
+            register_code(KC_RSFT); TAP_ONCE(KC_MINS); TAP_ONCE(KC_9); unregister_code(KC_RSFT);
+            TAP_UNI(0x30c4);
+            register_code(KC_RSFT); TAP_ONCE(KC_0); TAP_ONCE(KC_MINS); unregister_code(KC_RSFT);
+            TAP_ONCE(KC_SLSH);
+            TAP_UNI(0xaf);
         }
     }
 };
