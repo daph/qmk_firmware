@@ -244,6 +244,13 @@ void matrix_scan_user(void) {
             TAP_UNI(0x2501);
             TAP_UNI(0x253B);
         }
+
+        // Disapproval
+        SEQ_ONE_KEY(KC_D) {
+            TAP_UNI(0x0CA0);
+            register_code(KC_RSFT); TAP_ONCE(KC_MINS); unregister_code(KC_RSFT);
+            TAP_UNI(0x0CA0);
+        }
     }
 };
 
