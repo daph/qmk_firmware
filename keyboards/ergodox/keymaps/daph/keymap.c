@@ -229,6 +229,21 @@ void matrix_scan_user(void) {
             TAP_ONCE(KC_SLSH);
             TAP_UNI(0xaf);
         }
+
+        // Table flip
+        SEQ_ONE_KEY(KC_T) {
+            register_code(KC_RSFT); TAP_ONCE(KC_9); unregister_code(KC_RSFT);
+            TAP_UNI(0x256F);
+            TAP_UNI(0x00B0);
+            TAP_UNI(0x25A1);
+            TAP_UNI(0x00B0);
+            register_code(KC_RSFT); TAP_ONCE(KC_0); unregister_code(KC_RSFT);
+            TAP_UNI(0x256F);
+            TAP_UNI(0xFE35);
+            TAP_UNI(0x253B);
+            TAP_UNI(0x2501);
+            TAP_UNI(0x253B);
+        }
     }
 };
 
