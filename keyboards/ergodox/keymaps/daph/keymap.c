@@ -251,6 +251,15 @@ void matrix_scan_user(void) {
             register_code(KC_RSFT); TAP_ONCE(KC_MINS); unregister_code(KC_RSFT);
             TAP_UNI(0x0CA0);
         }
+
+        // Stare
+        SEQ_ONE_KEY(KC_A) {
+            register_code(KC_RSFT); TAP_ONCE(KC_9); unregister_code(KC_RSFT);
+            TAP_UNI(0x25CF);
+            register_code(KC_RSFT); TAP_ONCE(KC_MINS); TAP_ONCE(KC_MINS); unregister_code(KC_RSFT);
+            TAP_UNI(0x25CF);
+            register_code(KC_RSFT); TAP_ONCE(KC_0); unregister_code(KC_RSFT);
+        }
     }
 };
 
