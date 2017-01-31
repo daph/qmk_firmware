@@ -99,7 +99,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        VRSN,   KC_F1,  KC_F2,  KC_F3,  KC_F4,  KC_F5,  KC_F6,
        OSX,M(HELLO_M),KC_UP,  KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,
        LINUX,KC_LEFT,KC_DOWN,KC_RGHT,KC_TRNS,KC_TRNS,
-       KC_TRNS,UC(0x03bb),UC(0x30C4),KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,
+       KC_TRNS,UC(0x03BB),UC(0x30C4),UC(0x00AF),KC_TRNS,KC_TRNS,KC_TRNS,
           KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,
                                        KC_TRNS,KC_TRNS,
                                                KC_TRNS,
