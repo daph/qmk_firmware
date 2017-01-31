@@ -11,11 +11,17 @@
 
 enum custom_keycodes {
   PLACEHOLDER = SAFE_RANGE, // can always be here
-  VRSN
+  VRSN,
+  OSX,
+  LINUX
 };
 
 enum tap_dance {
     TD_SCLN_CLN
+};
+
+enum macros {
+    HELLO_M
 };
 
 qk_tap_dance_action_t tap_dance_actions[] = {
@@ -71,11 +77,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,---------------------------------------------------.           ,--------------------------------------------------.
  * |Version  |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |           |  F7  |  F8  |  F9  | F10  | F11  |  F12 | RESET  |
  * |---------+------+------+------+------+------+------|           |------+------+------+------+------+------+--------|
- * |         |      |  UP  |      |      |      |      |           |      |   [  |   1  |   2  |   3  |   =  |        |
+ * |  OSX    |HLO M |  UP  |      |      |      |      |           |      |   [  |   1  |   2  |   3  |   =  |        |
  * |---------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * |         | LEFT | DOWN | RIGHT|      |      |------|           |------|   ]  |   4  |   5  |   6  |   -  |        |
+ * |  LINUX  | LEFT | DOWN | RIGHT|      |      |------|           |------|   ]  |   4  |   5  |   6  |   -  |        |
  * |---------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * |         |      |      |      |      |      |      |           |      |      |   7  |   8  |   9  |      |        |
+ * |         |  λ   |      |      |      |      |      |           |      |      |   7  |   8  |   9  |      |        |
  * `---------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
  *   |       |      |      |      |      |                                       |      |   0  |      |      |      |
  *   `-----------------------------------'                                       `----------------------------------'
@@ -91,9 +97,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [ARROW] = KEYMAP(
        // left hand
        VRSN,   KC_F1,  KC_F2,  KC_F3,  KC_F4,  KC_F5,  KC_F6,
-       KC_TRNS,KC_TRNS,KC_UP,  KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,
-       KC_TRNS,KC_LEFT,KC_DOWN,KC_RGHT,KC_TRNS,KC_TRNS,
-       KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,
+       OSX,M(HELLO_M),KC_UP,  KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,
+       LINUX,KC_LEFT,KC_DOWN,KC_RGHT,KC_TRNS,KC_TRNS,
+       KC_TRNS,UC(0x03bb),UC(0x30C4),KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,
           KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,
                                        KC_TRNS,KC_TRNS,
                                                KC_TRNS,
@@ -160,6 +166,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
       break;
+    case OSX:
+      if (record->event.pressed) {
+          set_unicode_input_mode(UC_OSX);
+      }
+      return false;
+      break;
+    case LINUX:
+      if (record->event.pressed) {
+          set_unicode_input_mode(UC_LNX);
+      }
+      return false;
+      break;
   }
   return true;
 }
@@ -168,6 +186,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 void matrix_init_user(void) {
 };
 
+const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
+    switch(id) {
+        case HELLO_M:
+            if (record->event.pressed) {
+                return MACRO(T(M), T(A), T(C), T(R), T(O), T(S), END);
+            }
+            break;
+    }
+
+    return MACRO_NONE;
+}
 
 LEADER_EXTERNS();
 // Runs constantly in the background, in a loop.

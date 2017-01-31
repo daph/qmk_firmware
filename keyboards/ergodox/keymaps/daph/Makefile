@@ -11,7 +11,7 @@ RGBLIGHT_ENABLE:=no
 SLEEP_LED_ENABLE:=no
 TAP_DANCE_ENABLE:=yes
 UNICODEMAP_ENABLE:=no
-UNICODE_ENABLE:=no
+UNICODE_ENABLE:=yes
 
 ifndef QUANTUM_DIR
         include ../../../../Makefile
