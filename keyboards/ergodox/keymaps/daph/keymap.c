@@ -247,7 +247,7 @@ void matrix_scan_user(void) {
         }
 
         // Laughing while pointing
-        SEQ_ONE_KEY(KC_L) {
+        SEQ_ONE_KEY(KC_P) {
             register_code(KC_RSFT); TAP_ONCE(KC_9); unregister_code(KC_RSFT);
             TAP_UNI(0x261B);
             TAP_UNI(0x00B4);
@@ -256,6 +256,21 @@ void matrix_scan_user(void) {
             register_code(KC_RSFT); TAP_ONCE(KC_8); unregister_code(KC_RSFT);
             register_code(KC_RSFT); TAP_ONCE(KC_0); unregister_code(KC_RSFT);
             TAP_UNI(0x261B);
+        }
+
+        // Lenny
+        SEQ_ONE_KEY(KC_L) {
+            register_code(KC_RSFT); TAP_ONCE(KC_9); unregister_code(KC_RSFT);
+            TAP_ONCE(KC_SPC);
+            TAP_UNI(0x0361);
+            TAP_UNI(0x00B0);
+            TAP_ONCE(KC_SPC);
+            TAP_UNI(0x035C);
+            TAP_UNI(0x0296);
+            TAP_ONCE(KC_SPC);
+            TAP_UNI(0x0361);
+            TAP_UNI(0x00B0);
+            register_code(KC_RSFT); TAP_ONCE(KC_0); unregister_code(KC_RSFT);
         }
     }
 };
