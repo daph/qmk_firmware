@@ -45,14 +45,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_ARROW] = KEYMAP( \
   KC_F1,    KC_F2,    KC_F3,    KC_F4,   KC_F5,   KC_F6,   KC_LBRC, KC_7,    KC_8,    KC_9,    KC_EQL,  RESET, \
-  KC_F7,    KC_F8,    KC_UP,    KC_F9,   KC_F10,  KC_F11,  KC_RBRC, KC_4,    KC_4,    KC_6,    KC_MINS, KC_TRNS, \
+  KC_F7,    KC_F8,    KC_UP,    KC_F9,   KC_F10,  KC_F11,  KC_RBRC, KC_4,    KC_5,    KC_6,    KC_MINS, KC_TRNS, \
   KC_TRNS,  KC_LEFT,  KC_DOWN,  KC_RGHT, KC_TRNS, KC_F12,  KC_TRNS, KC_1,    KC_2,    KC_3,    KC_0,    KC_TRNS, \
   KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS \
 ),
 
 /* Arrow
  * ,-----------------------------------------------------------------------------------.
- * |      |      |      |      |      |      |      |      |      |      |      |      |
+ * |  1   |  2   |   3  |  4   |  5   |      |      |  6   |  7   |  8   |  9   | 0    |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
  * |      |  (   |   )  |   [  |   ]  |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
@@ -62,7 +62,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
 [_SYMB] = KEYMAP( \
-  KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, \
+  KC_1,     KC_2,     KC_3,     KC_4,    KC_4,    KC_TRNS, KC_TRNS, KC_6,    KC_7,    KC_8,    KC_9,    KC_0, \
   KC_TRNS,  S(KC_9),  S(KC_0),  KC_LBRC, KC_RBRC, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, \
   KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, \
   KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS \
