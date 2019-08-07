@@ -65,14 +65,21 @@
 #define BOOT_SIZE_1024 0b010
 #define BOOT_SIZE_2048 0b000
 
+//compatibility between ATMega8 and ATMega88
+#if !defined (MCUCSR)
+    #if defined (MCUSR)
+        #define MCUCSR MCUSR
+    #endif
+#endif
+
 /** \brief Entering the Bootloader via Software
  *
  * http://www.fourwalledcubicle.com/files/LUFA/Doc/120730/html/_page__software_bootloader_start.html
  */
 #define BOOTLOADER_RESET_KEY 0xB007B007
-uint32_t reset_key  __attribute__ ((section (".noinit")));
+uint32_t reset_key  __attribute__ ((section (".noinit,\"aw\",@nobits;")));
 
-/** \brief initialize MCU status by watchdog reset 
+/** \brief initialize MCU status by watchdog reset
  *
  * FIXME: needs doc
  */
@@ -81,7 +88,7 @@ void bootloader_jump(void) {
     #if !defined(BOOTLOADER_SIZE)
         uint8_t high_fuse = boot_lock_fuse_bits_get(GET_HIGH_FUSE_BITS);
 
-        if (high_fuse & BOOT_SIZE_256) { 
+        if (high_fuse & BOOT_SIZE_256) {
             bootloader_start = (FLASH_SIZE - 512) >> 1;
         } else if (high_fuse & BOOT_SIZE_512) {
             bootloader_start = (FLASH_SIZE - 1024) >> 1;
@@ -130,7 +137,7 @@ void bootloader_jump(void) {
             DDRA = 0; DDRB = 0; DDRC = 0; DDRD = 0; DDRE = 0; DDRF = 0;
             PORTA = 0; PORTB = 0; PORTC = 0; PORTD = 0; PORTE = 0; PORTF = 0;
             asm volatile("jmp 0x1FC00");
-        #endif 
+        #endif
 
     #elif defined(BOOTLOADER_CATERINA)
         // this block may be optional
@@ -149,9 +156,42 @@ void bootloader_jump(void) {
 
         while(1) {} // wait for watchdog timer to trigger
 
+    #elif defined(BOOTLOADER_USBASP)
+        // Taken with permission of Stephan Baerwolf from https://github.com/tinyusbboard/API/blob/master/apipage.c
+        wdt_enable(WDTO_15MS);
+        wdt_reset();
+        asm volatile (
+            "cli                    \n\t"
+            "ldi    r29 ,       %[ramendhi] \n\t"
+            "ldi    r28 ,       %[ramendlo] \n\t"
+            #if (FLASHEND>131071)
+                "ldi    r18 ,       %[bootaddrhi]   \n\t"
+                "st     Y+,         r18     \n\t"
+            #endif
+            "ldi    r18 ,       %[bootaddrme]   \n\t"
+            "st     Y+,     r18     \n\t"
+            "ldi    r18 ,       %[bootaddrlo]   \n\t"
+            "st     Y+,     r18     \n\t"
+            "out    %[mcucsrio],    __zero_reg__    \n\t"
+            "bootloader_startup_loop%=:         \n\t"
+            "rjmp bootloader_startup_loop%=     \n\t"
+            : 
+            : [mcucsrio]    "I" (_SFR_IO_ADDR(MCUCSR)),
+            #if (FLASHEND>131071)
+                [ramendhi]    "M" (((RAMEND - 2) >> 8) & 0xff),
+                [ramendlo]    "M" (((RAMEND - 2) >> 0) & 0xff),
+                [bootaddrhi]  "M" ((((FLASH_SIZE - BOOTLOADER_SIZE) >> 1) >>16) & 0xff),
+            #else
+                [ramendhi]    "M" (((RAMEND - 1) >> 8) & 0xff),
+                [ramendlo]    "M" (((RAMEND - 1) >> 0) & 0xff),
+            #endif
+            [bootaddrme]  "M" ((((FLASH_SIZE - BOOTLOADER_SIZE) >> 1) >> 8) & 0xff),
+            [bootaddrlo]  "M" ((((FLASH_SIZE - BOOTLOADER_SIZE) >> 1) >> 0) & 0xff)
+        );
+
     #else // Assume remaining boards are DFU, even if the flag isn't set
 
-        #ifndef __AVR_ATmega32A__ // no USB - maybe BOOTLOADER_BOOTLOADHID instead though?
+        #if !(defined(__AVR_ATmega32A__) || defined(__AVR_ATmega328P__)) // no USB - maybe BOOTLOADER_BOOTLOADHID instead though?
             UDCON = 1;
             USBCON = (1<<FRZCLK);  // disable USB
             UCSR1B = 0;
@@ -172,24 +212,19 @@ void bootloader_jump(void) {
 
 }
 
-#ifdef __AVR_ATmega32A__
-    // MCUSR is actually called MCUCSR in ATmega32A
-    #define MCUSR MCUCSR
-#endif
-
 /* this runs before main() */
 void bootloader_jump_after_watchdog_reset(void) __attribute__ ((used, naked, section (".init3")));
 void bootloader_jump_after_watchdog_reset(void)
 {
     #ifndef BOOTLOADER_HALFKAY
-        if ((MCUSR & (1<<WDRF)) && reset_key == BOOTLOADER_RESET_KEY) {
+        if ((MCUCSR & (1<<WDRF)) && reset_key == BOOTLOADER_RESET_KEY) {
             reset_key = 0;
 
             // My custom USBasploader requires this to come up.
-            MCUSR = 0;
+            MCUCSR = 0;
 
             // Seems like Teensy halfkay loader requires clearing WDRF and disabling watchdog.
-            MCUSR &= ~(1<<WDRF);
+            MCUCSR &= ~(1<<WDRF);
             wdt_disable();
 
 
@@ -202,29 +237,3 @@ void bootloader_jump_after_watchdog_reset(void)
         }
     #endif
 }
-
-
-#if 0
-    /*
-     * USBaspLoader - I'm not sure if this is used at all in any projects
-     *                would love to support it if it is -Jack
-     */
-#if defined(__AVR_ATmega168__) || defined(__AVR_ATmega168P__) || defined(__AVR_ATmega328P__)
-    // This makes custom USBasploader come up.
-    MCUSR = 0;
-
-    // initialize ports
-    PORTB = 0; PORTC= 0; PORTD = 0;
-    DDRB = 0; DDRC= 0; DDRD = 0;
-
-    // disable interrupts
-    EIMSK = 0; EECR = 0; SPCR = 0;
-    ACSR = 0; SPMCSR = 0; WDTCSR = 0; PCICR = 0;
-    TIMSK0 = 0; TIMSK1 = 0; TIMSK2 = 0;
-    ADCSRA = 0; TWCR = 0; UCSR0B = 0;
-#endif
-
-    // This is compled into 'icall', address should be in word unit, not byte.
-    ((void (*)(void))(BOOTLOADER_START/2))();
-}
-#endif
