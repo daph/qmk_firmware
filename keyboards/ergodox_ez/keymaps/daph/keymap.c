@@ -5,6 +5,8 @@
 #define ARROW 1 // Arrow keys and numpad
 #define SYMB  2 // Symbols
 #define GAME  4 // little mod for gaming
+#define BLND1 5 // some mod for blender
+#define BLND2 6 // more mod for blender
 
 #define TAP_ONCE(code)  \
   register_code (code); \
@@ -37,7 +39,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *   |~L1| `|  \  |   ,  | Ctrl  |                                        |  Alt |  Up  | Down | Right| ~L2 |
  *   `----------------------------------'                                       `----------------------------------'
  *                                        ,-------------.       ,-------------.
- *                                        | tog4 |Shift |       | Alt  | Alt  |
+ *                                        | tog4 |Shift |       | Alt  | tog5  |
  *                                 ,------|------|------|       |------+--------+------.
  *                                 |      |      | Home |       | PgUp |        |      |
  *                                 | Space|Enter |------|       |------|Bckspc  |Shift |
@@ -62,7 +64,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                           KC_H,   KC_J,  KC_K,   KC_L,   KC_SCLN,  KC_QUOT,
              KC_LEAD,       KC_N,   KC_M,  KC_EQL, KC_COMM,KC_DOT,           KC_SLSH,
                                   KC_LALT,KC_UP, KC_DOWN,KC_RIGHT,         MO(2),
-             KC_LALT,        KC_LALT,
+             KC_LALT,        TG(5),
              KC_PGUP,
              KC_PGDN,KC_BSPC, KC_LSFT
     ),
@@ -192,6 +194,92 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
              KC_PGUP,
              KC_PGDN,KC_BSPC, KC_LGUI
     ),
+/* Keymap 5: Blender base layer
+ *
+ * ,--------------------------------------------------.           ,--------------------------------------------------.
+ * |   `    |   1  |   2  |   3  |   4  |   5  | Del  |           | [    |   6  |   7  |   8  |   9  |   0  |   \    |
+ * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
+ * | Esc    |   Q  |   W  |   E  |   R  |   T  | HOME |           |  ]   |   Y  |   U  |   I  |   O  |   P  |   -    |
+ * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
+ * | Tab    |   A  |   S  |   D  |   F  |   G  |------|           |------|   H  |   J  |   K  |   L  |;     |'       |
+ * |--------+------+------+------+------+------| END  |           | LEAD |------+------+------+------+------+--------|
+ * |  LGui  |   Z  |   X  |   C  |   V  |   B  |      |           |      |   N  |   M  |   =  |   ,  | .    |   /    |
+ * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
+ *   |~L6   | `    |  Alt  |   ,  | Ctrl  |                                        |  Alt |  Up  | Down | Right| ~L2 |
+ *   `----------------------------------'                                        `---------------------------------'
+ *                                        ,-------------.       ,-------------.
+ *                                        | tog4 |Shift |       | Alt  | tog5  |
+ *                                 ,------|------|------|       |------+--------+------.
+ *                                 |      |      | Home |       | PgUp |        |      |
+ *                                 | Space|Enter |------|       |------|Bckspc  |Shift |
+ *                                 |      |      | End  |       | PgDn |        |      |
+ *                                 `--------------------'       `----------------------'
+ */
+// If it accepts an argument (i.e, is a function), it doesn't need KC_.
+// Otherwise, it needs KC_*
+[BLND1] = LAYOUT_ergodox(  // layer 5 : blend1
+        // left hand
+        KC_GRV,         KC_1,         KC_2,   KC_3,   KC_4,   KC_5,   KC_DEL,
+        KC_ESC,         KC_Q,         KC_W,   KC_E,   KC_R,   KC_T,   KC_HOME,
+        CTL_T(KC_TAB),         KC_A,         KC_S,   KC_D,   KC_F,   KC_G,
+        KC_LGUI, KC_Z,         KC_X,   KC_C,   KC_V,   KC_B,   KC_END,
+        MO(6),          KC_GRV,       KC_LALT,     KC_COMM,   KC_LCTL,
+                                                    TG(4),  KC_LSFT,
+                                                              KC_HOME,
+                                               KC_SPC,KC_ENT ,KC_END,
+        // right hand
+             KC_LBRC,     KC_6,   KC_7,  KC_8,   KC_9,   KC_0,             KC_BSLS,
+             KC_RBRC,     KC_Y,   KC_U,  KC_I,   KC_O,   KC_P,             KC_MINS,
+                          KC_H,   KC_J,  KC_K,   KC_L,   KC_SCLN,  KC_QUOT,
+             KC_LEAD,       KC_N,   KC_M,  KC_EQL, KC_COMM,KC_DOT,           KC_SLSH,
+                                  KC_LALT,KC_UP, KC_DOWN,KC_RIGHT,         MO(2),
+             KC_LALT,        TG(5),
+             KC_PGUP,
+             KC_PGDN,KC_BSPC, KC_LSFT
+    ),
+/* Keymap 6: Blender top layer (get right side keys on left)
+ *
+ * ,--------------------------------------------------.           ,--------------------------------------------------.
+ * |   `    |   6  |   7  |   8  |   9  |   0  | Del  |           | [    |   6  |   7  |   8  |   9  |   0  |   \    |
+ * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
+ * | Esc    |   Y  |   U  |   I  |   O  |   P  | HOME |           |  ]   |   Y  |   U  |   I  |   O  |   P  |   -    |
+ * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
+ * | Tab    |   H  |   J  |   K  |   L  |   ;  |------|           |------|   H  |   J  |   K  |   L  |;     |'       |
+ * |--------+------+------+------+------+------| END  |           | LEAD |------+------+------+------+------+--------|
+ * |  LGui  |   N  |   M  |   =  |   ,  |   .  |      |           |      |   N  |   M  |   =  |   ,  | .    |   /    |
+ * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
+ *   |~L6   | `    |  ALT  |   ,  | Ctrl  |                                        |  Alt |  Up  | Down | Right| ~L2 |
+ *   `----------------------------------'                                        `---------------------------------'
+ *                                        ,-------------.       ,-------------.
+ *                                        | Shift|Shift |       | Alt  | tog5  |
+ *                                 ,------|------|------|       |------+--------+------.
+ *                                 |      |      | Home |       | PgUp |        |      |
+ *                                 | Space|Enter |------|       |------|Bckspc  |Shift |
+ *                                 |      |      | End  |       | PgDn |        |      |
+ *                                 `--------------------'       `----------------------'
+ */
+// If it accepts an argument (i.e, is a function), it doesn't need KC_.
+// Otherwise, it needs KC_*
+[BLND2] = LAYOUT_ergodox(  // layer 0 : default
+        // left hand
+        KC_GRV,         KC_6,         KC_7,   KC_8,   KC_9,   KC_0,   KC_DEL,
+        KC_ESC,         KC_Y,         KC_U,   KC_I,   KC_O,   KC_P,   KC_HOME,
+        CTL_T(KC_TAB),         KC_H,         KC_J,   KC_K,   KC_L,   KC_SCLN,
+        KC_LGUI, KC_N,         KC_M,   KC_EQL,   KC_COMM,   KC_DOT,   KC_END,
+        MO(6),          KC_GRV,       KC_LALT,     KC_COMM,   KC_LCTL,
+                                                    KC_LSFT,  KC_LSFT,
+                                                              KC_HOME,
+                                               KC_SPC,KC_ENT ,KC_END,
+        // right hand
+             KC_LBRC,     KC_6,   KC_7,  KC_8,   KC_9,   KC_0,             KC_BSLS,
+             KC_RBRC,     KC_Y,   KC_U,  KC_I,   KC_O,   KC_P,             KC_MINS,
+                          KC_H,   KC_J,  KC_K,   KC_L,   KC_SCLN,  KC_QUOT,
+             KC_LEAD,       KC_N,   KC_M,  KC_EQL, KC_COMM,KC_DOT,           KC_SLSH,
+                                  KC_LALT,KC_UP, KC_DOWN,KC_RIGHT,         MO(2),
+             KC_LALT,        TG(5),
+             KC_PGUP,
+             KC_PGDN,KC_BSPC, KC_LSFT
+    ),
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -223,10 +311,84 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 void matrix_init_user(void) {
     // Default to Linux unicode
     set_unicode_input_mode(UC_LNX);
+#ifdef RGBLIGHT_COLOR_LAYER_0
+    rgblight_setrgb(RGBLIGHT_COLOR_LAYER_0);
+#endif
 };
 
 const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
     return MACRO_NONE;
+}
+// Runs whenever there is a layer state change.
+uint32_t layer_state_set_user(uint32_t state) {
+  ergodox_board_led_off();
+  ergodox_right_led_1_off();
+  ergodox_right_led_2_off();
+  ergodox_right_led_3_off();
+
+  uint8_t layer = biton32(state);
+  switch (layer) {
+      case 0:
+        #ifdef RGBLIGHT_COLOR_LAYER_0
+          rgblight_setrgb(RGBLIGHT_COLOR_LAYER_0);
+        #else
+        #ifdef RGBLIGHT_ENABLE
+          rgblight_init();
+        #endif
+        #endif
+        break;
+      case 4:
+        ergodox_right_led_1_on();
+        #ifdef RGBLIGHT_COLOR_LAYER_1
+          rgblight_setrgb(RGBLIGHT_COLOR_LAYER_1);
+        #endif
+        break;
+      case 5:
+        ergodox_right_led_2_on();
+        #ifdef RGBLIGHT_COLOR_LAYER_2
+          rgblight_setrgb(RGBLIGHT_COLOR_LAYER_2);
+        #endif
+        break;
+      case 6:
+        ergodox_right_led_3_on();
+        #ifdef RGBLIGHT_COLOR_LAYER_3
+          rgblight_setrgb(RGBLIGHT_COLOR_LAYER_3);
+        #endif
+        break;
+//      case 4:
+//        ergodox_right_led_1_on();
+//        ergodox_right_led_2_on();
+//        #ifdef RGBLIGHT_COLOR_LAYER_4
+//          rgblight_setrgb(RGBLIGHT_COLOR_LAYER_4);
+//        #endif
+//        break;
+//      case 5:
+//        ergodox_right_led_1_on();
+//        ergodox_right_led_3_on();
+//        #ifdef RGBLIGHT_COLOR_LAYER_5
+//          rgblight_setrgb(RGBLIGHT_COLOR_LAYER_5);
+//        #endif
+//        break;
+//      case 6:
+//        ergodox_right_led_2_on();
+//        ergodox_right_led_3_on();
+//        #ifdef RGBLIGHT_COLOR_LAYER_6
+//          rgblight_setrgb(RGBLIGHT_COLOR_LAYER_6);
+//        #endif
+//        break;
+//      case 7:
+//        ergodox_right_led_1_on();
+//        ergodox_right_led_2_on();
+//        ergodox_right_led_3_on();
+//        #ifdef RGBLIGHT_COLOR_LAYER_7
+//          rgblight_setrgb(RGBLIGHT_COLOR_LAYER_7);
+//        #endif
+//        break;
+      default:
+        break;
+    }
+
+  return state;
 }
 
 LEADER_EXTERNS();
