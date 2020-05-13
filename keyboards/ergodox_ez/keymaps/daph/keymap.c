@@ -221,7 +221,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         // left hand
         KC_GRV,         KC_1,         KC_2,   KC_3,   KC_4,   KC_5,   KC_DEL,
         KC_ESC,         KC_Q,         KC_W,   KC_E,   KC_R,   KC_T,   KC_HOME,
-        CTL_T(KC_TAB),         KC_A,         KC_S,   KC_D,   KC_F,   KC_G,
+        KC_TAB,         KC_A,         KC_S,   KC_D,   KC_F,   KC_G,
         KC_LGUI, KC_Z,         KC_X,   KC_C,   KC_V,   KC_B,   KC_END,
         MO(6),          KC_GRV,       KC_LALT,     KC_COMM,   KC_LCTL,
                                                     TG(4),  KC_LSFT,
@@ -245,8 +245,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * | Esc    |   Y  |   U  |   I  |   O  |   P  | HOME |           |  ]   |   Y  |   U  |   I  |   O  |   P  |   -    |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
  * | Tab    |   H  |   J  |   K  |   L  |   ;  |------|           |------|   H  |   J  |   K  |   L  |;     |'       |
- * |--------+------+------+------+------+------| END  |           | LEAD |------+------+------+------+------+--------|
- * |  LGui  |   N  |   M  |   =  |   ,  |   .  |      |           |      |   N  |   M  |   =  |   ,  | .    |   /    |
+ * |--------+------+------+------+------+------| NUM  |           | LEAD |------+------+------+------+------+--------|
+ * |  LGui  |   N  |   M  |   =  |   ,  |   .  |  /   |           |      |   N  |   M  |   =  |   ,  | .    |   /    |
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
  *   |~L6   | `    |  ALT  |   ,  | Ctrl  |                                        |  Alt |  Up  | Down | Right| ~L2 |
  *   `----------------------------------'                                        `---------------------------------'
@@ -264,8 +264,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         // left hand
         KC_GRV,         KC_6,         KC_7,   KC_8,   KC_9,   KC_0,   KC_DEL,
         KC_ESC,         KC_Y,         KC_U,   KC_I,   KC_O,   KC_P,   KC_HOME,
-        CTL_T(KC_TAB),         KC_H,         KC_J,   KC_K,   KC_L,   KC_SCLN,
-        KC_LGUI, KC_N,         KC_M,   KC_EQL,   KC_COMM,   KC_DOT,   KC_END,
+        KC_TAB,         KC_H,         KC_J,   KC_K,   KC_L,   KC_SCLN,
+        KC_LGUI, KC_N,         KC_M,   KC_EQL,   KC_COMM,   KC_DOT,   KC_PSLS,
         MO(6),          KC_GRV,       KC_LALT,     KC_COMM,   KC_LCTL,
                                                     KC_LSFT,  KC_LSFT,
                                                               KC_HOME,
