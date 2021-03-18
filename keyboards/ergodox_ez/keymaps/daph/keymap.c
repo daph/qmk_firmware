@@ -38,7 +38,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------| |    |           | LEAD |------+------+------+------+------+--------|
  * |  LGui  |   Z  |   X  |   C  |   V  |   B  |      |           |      |   N  |   M  |   =  |   ,  | .    |   /    |
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
- *   |~L1| `|  \  |   ,  | Ctrl  |                                        |  Alt |  Up  | Down | Right| ~L2 |
+ *   |~L1| RALT |  \  |   ,  | Ctrl  |                                        |  Alt |  UP | Down | RALT| ~L2 |
  *   `----------------------------------'                                       `----------------------------------'
  *                                        ,-------------.       ,-------------.
  *                                        | tog4 |Shift |       | tog7  | tog5  |
@@ -56,7 +56,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_ESC,         KC_Q,         KC_W,   KC_E,   KC_R,   KC_T,   KC_LBRC,
         CTL_T(KC_TAB),         KC_A,         KC_S,   KC_D,   KC_F,   KC_G,
         KC_LGUI, KC_Z,         KC_X,   KC_C,   KC_V,   KC_B,   S(KC_BSLS),
-        MO(1),          KC_GRV,       KC_BSLS,     KC_COMM,   KC_LCTL,
+        MO(1),          KC_RALT,       KC_BSLS,     KC_COMM,   KC_LCTL,
                                                     TG(4),  KC_LSFT,
                                                               KC_HOME,
                                                KC_SPC,KC_ENT ,KC_END,
@@ -65,7 +65,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
              KC_RBRC,     KC_Y,   KC_U,  KC_I,   KC_O,   KC_P,             KC_MINS,
                           KC_H,   KC_J,  KC_K,   KC_L,   KC_SCLN,  KC_QUOT,
              KC_LEAD,       KC_N,   KC_M,  KC_EQL, KC_COMM,KC_DOT,           KC_SLSH,
-                                  KC_LALT,KC_UP, KC_DOWN,KC_RIGHT,         MO(2),
+                                  KC_LALT,KC_UP, KC_DOWN,KC_RALT,         MO(2),
              TG(7),        TG(5),
              KC_PGUP,
              KC_PGDN,KC_BSPC, KC_LSFT
@@ -75,7 +75,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,---------------------------------------------------.           ,--------------------------------------------------.
  * |Version  |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |           |  F7  |  F8  |  F9  | F10  | F11  |  F12 | RESET  |
  * |---------+------+------+------+------+------+------|           |------+------+------+------+------+------+--------|
- * |  OSX    |      |  UP  |      |      |      |      |           |      |   [  |   1  |   2  |   3  |   =  |        |
+ * |  OSX    |      |  UP  |  CAP |      |      |      |           |      |   [  |   1  |   2  |   3  |   =  |        |
  * |---------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
  * |  LINUX  | LEFT | DOWN | RIGHT|      |      |------|           |------|   ]  |   4  |   5  |   6  |   -  |        |
  * |---------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
@@ -95,7 +95,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [ARROW] = LAYOUT_ergodox(
        // left hand
        VRSN,   KC_F1,  KC_F2,  KC_F3,  KC_F4,  KC_F5,  KC_F6,
-       OSX,    KC_TRNS,KC_UP,  KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,
+       OSX,    KC_TRNS,KC_UP,  KC_CAPS,KC_TRNS,KC_TRNS,KC_TRNS,
        LINUX,KC_LEFT,KC_DOWN,KC_RGHT,KC_TRNS,KC_TRNS,
        KC_TRNS,UC(0x03BB),KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,
           KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,
